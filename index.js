@@ -20,5 +20,5 @@ E.update_log = tls_socket=>{
     const {client_random, master_key} = sslkeylog.get_session_key(tls_socket);
     const hex1 = client_random.toString('hex');
     const hex2 = master_key.toString('hex');
-    fs.appendFileSync('/tmp/sslkeylog.txt', `CLIENT_RANDOM ${hex1} ${hex2}\n`);
+    fs.appendFileSync(E.filename, `CLIENT_RANDOM ${hex1} ${hex2}\n`);
 };
