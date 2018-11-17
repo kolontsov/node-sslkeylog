@@ -1,0 +1,37 @@
+{
+  "name": "sslkeylog",
+  "version": "0.1.0-alpha",
+  "description": "Server-side SSLKEYLOG generation",
+  "main": "index.js",
+  "gypfile": true,
+  "scripts": {
+    "preinstall": "node scripts/get-dist.js",
+    "install": "node-gyp --nodedir=${npm_config_tmp}/sslkeylog-node-v${npm_config_node_version} rebuild",
+    "test": "node node_modules/mocha/bin/mocha",
+    "clean": "node-gyp clean && (cd examples; make clean)"
+  },
+  "keywords": [
+    "tls",
+    "ssl",
+    "wireshark",
+    "sslkeylog"
+  ],
+  "author": "Vadim Kolontsov <vadim@kolontsov.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kolontsov/node-sslkeylog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kolontsov/node-sslkeylog/issues"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "node-addon-api": "^1.6.1"
+  },
+  "engines": {
+    "node": ">=10"
+  }
+}
