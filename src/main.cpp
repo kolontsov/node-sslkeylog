@@ -51,7 +51,6 @@ Napi::Object get_session_key(const Napi::CallbackInfo& info) {
     if (!ssl_prop.IsObject())
         throw Napi::TypeError::New(env, "'ssl' property is not an object");
 
-    // 
     Local<Object> obj = v8_local_obj_from_napi_value(ssl_prop);
     if (v8_local_obj_ctor(obj)!="TLSWrap")
         throw Napi::TypeError::New(env, "'ssl' property is not TLSWrap");
