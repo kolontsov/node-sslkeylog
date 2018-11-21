@@ -14,7 +14,7 @@ const mkdirp = dir=>{
         fs.mkdirSync(dir);
 };
 
-const download = (src_url, dest, cb)=>new Promise((resolve, reject)=>{
+const download = (src_url, dest)=>new Promise((resolve, reject)=>{
     mkdirp(path.dirname(dest));
     https.get({...url.parse(src_url), encoding: null}, resp=>{
         let fsize = parseInt(resp.headers['content-length']);
