@@ -1,6 +1,6 @@
 {
   "name": "sslkeylog",
-  "version": "0.1.1-alpha",
+  "version": "0.1.1",
   "description": "Server-side SSLKEYLOG generation",
   "main": "index.js",
   "gypfile": true,
