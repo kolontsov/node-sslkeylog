@@ -68,7 +68,7 @@ Open `test.pcap` in Wireshark, right-click on any TLS packet, choose *Protocol P
 
 Now you can see decrypted packets:
 
-![wireshark screenshot](wireshark.png)
+![wireshark screenshot](https://cdn.jsdelivr.net/gh/kolontsov/node-sslkeylog/wireshark.png)
 
 ### TODO
 
