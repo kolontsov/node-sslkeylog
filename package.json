@@ -10,6 +10,12 @@
     "test": "node node_modules/mocha/bin/mocha",
     "clean": "node-gyp clean && (cd examples; make clean)"
   },
+  "files": [
+    "index.js",
+    "binding.gyp",
+    "src/",
+    "scripts/"
+  ],
   "keywords": [
     "tls",
     "ssl",
