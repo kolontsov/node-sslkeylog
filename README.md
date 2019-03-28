@@ -4,7 +4,7 @@
 
 [![NPM](https://nodei.co/npm/sslkeylog.png)](https://nodei.co/npm/sslkeylog/)
 
-**sslkeylog** is a Node.js module for generating server-side SSLKEYLOG, which can be used later by Wireshark to decrypt SSL connections. This method works with any TLS cipher suite including elliptic curves crypto.
+**sslkeylog** is a Node.js module for generating SSLKEYLOG, which can be used later by Wireshark to decrypt SSL connections. This method works with any TLS cipher suite including elliptic curves crypto.
 
 Further reading about SSLKEYLOG:
 
@@ -12,7 +12,7 @@ Further reading about SSLKEYLOG:
 * [Decrypting TLS browser traffic with Wireshark: the easy way](https://jimshaver.net/2015/02/11/decrypting-tls-browser-traffic-with-wireshark-the-easy-way/)
 
 ### Installation
-
+server
 [Node.js](https://nodejs.org/) v10+ is required. Tested on v10 (LTS) and v11 (CURRENT), OS X and Linux.
 
 To use in your project, install as usual:
