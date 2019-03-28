@@ -12,7 +12,7 @@ Further reading about SSLKEYLOG:
 * [Decrypting TLS browser traffic with Wireshark: the easy way](https://jimshaver.net/2015/02/11/decrypting-tls-browser-traffic-with-wireshark-the-easy-way/)
 
 ### Installation
-server
+
 [Node.js](https://nodejs.org/) v10+ is required. Tested on v10 (LTS) and v11 (CURRENT), OS X and Linux.
 
 To use in your project, install as usual:
