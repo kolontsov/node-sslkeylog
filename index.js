@@ -22,3 +22,17 @@ E.update_log = tls_socket=>{
     const hex2 = master_key.toString('hex');
     fs.appendFileSync(E.filename, `CLIENT_RANDOM ${hex1} ${hex2}\n`);
 };
+
+// convenience functions
+
+E.hook_server = server=>{
+    server.on('secureConnection', E.update_log);
+};
+
+E.hook_agent = agent=>{
+    const patchSocket = socket => socket.on("secureConnect", () => E.update_log(socket));
+    const patchIfSocket = socket => socket ? patchSocket(socket) : socket;
+    const original = agent.createConnection.bind(agent);
+    agent.createConnection = (options, callback) =>
+        patchIfSocket(original(options, (err, socket) => callback(err, patchIfSocket(socket))));
+};
