@@ -4,6 +4,7 @@
         "cflags!": ["-fno-exceptions"],
         "cflags_cc!": ["-fno-exceptions"],
         "sources": [
+            "src/unwrap_ssl.cpp",
             "src/main.cpp",
         ],
         "include_dirs": [
@@ -13,8 +14,7 @@
             "<!(node -p \"require('node-addon-api').gyp\")"
         ],
         "defines": [
-            "NAPI_CPP_EXCEPTIONS", 
-            "NODE_WANT_INTERNALS=1",
+            "NAPI_CPP_EXCEPTIONS",
         ],
         "conditions": [
             ["OS=='mac'", {
