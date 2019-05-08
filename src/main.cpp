@@ -15,6 +15,8 @@ napi_value get_client_random(napi_env env, SSL *ssl) {
 napi_value get_master_key(napi_env env, SSL *ssl) {
     auto buf = Napi::Buffer<unsigned char>::New(env, SSL_MAX_MASTER_KEY_LENGTH);
     SSL_SESSION *session = SSL_get_session(ssl);
+    if (!session)
+        throw Napi::Error::New(env, "No TLS session present");
     SSL_SESSION_get_master_key(session, buf.Data(), SSL_MAX_MASTER_KEY_LENGTH);
     return buf;
 };
