@@ -7,6 +7,8 @@ catch(e){
     var sslkeylog = require('./build/Debug/sslkeylog.node');
 }
 
+E.filename = process.env.SSLKEYLOGFILE;
+
 E.get_session_key = sslkeylog.get_session_key;
 
 E.set_log = filename=>{
