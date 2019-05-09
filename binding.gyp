@@ -9,6 +9,9 @@
         ],
         "include_dirs": [
             "<!@(node -p \"require('node-addon-api').include\")",
+            # Backport of https://github.com/nodejs/node-gyp/pull/1055
+            "<(node_root_dir)/deps/openssl/config",
+            "<(node_root_dir)/deps/openssl/openssl/include",
         ],
         "dependencies": [
             "<!(node -p \"require('node-addon-api').gyp\")"
