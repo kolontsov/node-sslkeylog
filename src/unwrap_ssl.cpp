@@ -11,7 +11,7 @@ using v8::Isolate;
 
 class TLSWrap2 : public node::TLSWrap {
     public: SSL* get_ssl(){
-#if NODE_VERSION_AT_LEAST(10,8,0)
+#if NODE_VERSION_AT_LEAST(10,2,0)
         return ssl_.get();
 #else
         return ssl_;
