@@ -10,7 +10,13 @@ using v8::Object;
 using v8::Isolate;
 
 class TLSWrap2 : public node::TLSWrap {
-    public: SSL* get_ssl(){ return ssl_.get(); }
+    public: SSL* get_ssl(){
+#if NODE_VERSION_AT_LEAST(10,8,0)
+        return ssl_.get();
+#else
+        return ssl_;
+#endif
+    }
 };
 
 static std::string v8_local_obj_ctor(Local<Object> obj) {
@@ -32,5 +38,5 @@ SSL* unwrap_ssl(napi_env env, Napi::Object socket) {
     Local<Object> wrap_v8 = v8_local_obj_from_napi_value(wrap_js);
     if (v8_local_obj_ctor(wrap_v8)!="TLSWrap")
         throw Napi::TypeError::New(env, "'_handle' property is not TLSWrap");
-    return TLSWrap2::FromJSObject<TLSWrap2>(wrap_v8)->get_ssl();
+    return node::Unwrap<TLSWrap2>(wrap_v8)->get_ssl();
 }
