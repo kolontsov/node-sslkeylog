@@ -10,7 +10,13 @@ using v8::Object;
 using v8::Isolate;
 
 class TLSWrap2 : public node::TLSWrap {
-    public: SSL *get_ssl(){ return &(*ssl_); }
+    public: SSL* get_ssl(){
+#if NODE_VERSION_AT_LEAST(10,8,0)
+        return ssl_.get();
+#else
+        return ssl_;
+#endif
+    }
 };
 
 static std::string v8_local_obj_ctor(Local<Object> obj) {
