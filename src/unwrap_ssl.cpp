@@ -30,12 +30,8 @@ static Local<Object> v8_local_obj_from_napi_value(napi_value v) {
   return local.As<Object>();
 }
 
-SSL* unwrap_ssl(napi_env env, Napi::Object socket) {
-    Napi::Value wrap_js = socket.Get("_handle");
-    if (!wrap_js.IsObject())
-        throw Napi::TypeError::New(env, "'_handle' property is not an object");
-
-    Local<Object> wrap_v8 = v8_local_obj_from_napi_value(wrap_js);
+SSL* unwrap_ssl(napi_env env, napi_value wrap) {
+    Local<Object> wrap_v8 = v8_local_obj_from_napi_value(wrap);
     if (v8_local_obj_ctor(wrap_v8)!="TLSWrap")
         throw Napi::TypeError::New(env, "'_handle' property is not TLSWrap");
     return node::Unwrap<TLSWrap2>(wrap_v8)->get_ssl();

@@ -10,9 +10,9 @@ Napi::Object get_session_key(const Napi::CallbackInfo& info) {
     Napi::Env env = info.Env();
 
     if (info.Length()<1 || !info[0].IsObject())
-        throw Napi::TypeError::New(env, "get_session_key() expects TLSSocket argument");
+        throw Napi::TypeError::New(env, "get_session_key() expects TLSWrap argument");
 
-    SSL* ssl = unwrap_ssl(env, info[0].As<Napi::Object>());
+    SSL* ssl = unwrap_ssl(env, info[0]);
     SSL_SESSION* session = SSL_get_session(ssl);
     if (!session)
         throw Napi::Error::New(env, "No TLS session present");

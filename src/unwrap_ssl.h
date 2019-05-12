@@ -5,9 +5,9 @@
 #include <openssl/ssl.h>
 
 /**
- * Returns the OpenSSL context for a given N-API value referring
- * to a `tls.TLSSocket` object.
+ * Returns the OpenSSL connection for a given N-API value referring
+ * to a `TLSWrap` object.
  */
-SSL* unwrap_ssl(napi_env env, Napi::Object socket);
+SSL* unwrap_ssl(napi_env env, napi_value wrap);
 
 #endif
