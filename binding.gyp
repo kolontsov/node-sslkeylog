@@ -3,6 +3,8 @@
         "target_name": "sslkeylog",
         "cflags!": ["-fno-exceptions"],
         "cflags_cc!": ["-fno-exceptions"],
+        # we're accessing internals, disable inlining to prevent crashes
+        "cflags": ["-fno-inline -fno-early-inlining"],
         "sources": [
             "src/unwrap_ssl.cpp",
             "src/main.cpp",

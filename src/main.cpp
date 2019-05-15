@@ -29,8 +29,32 @@ Napi::Object get_session_key(const Napi::CallbackInfo& info) {
     return result;
 }
 
+#if OPENSSL_VERSION_NUMBER >= 0x10101000
+void KeylogCallback(const SSL* s, const char* line) {
+    const size_t size = strlen(line);
+    char data [size + 1];
+    memcpy(data, line, size);
+    data[size] = '\n';
+    call_with_data(s, "onkeylog", data, size + 1);
+}
+
+Napi::Value enable_keylog_callback(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+
+    if (info.Length()<1 || !info[0].IsObject())
+        throw Napi::TypeError::New(env, "enable_keylog_callback() expects TLSWrap argument");
+    SSL_CTX* ctx = unwrap_ssl_ctx(env, info[0]);
+    SSL_CTX_set_keylog_callback(ctx, KeylogCallback);
+
+    return env.Undefined();
+}
+#endif
+
 Napi::Object init(Napi::Env env, Napi::Object exports) {
     exports.Set("get_session_key", Napi::Function::New(env, get_session_key));
+#if OPENSSL_VERSION_NUMBER >= 0x10101000
+    exports.Set("enable_keylog_callback", Napi::Function::New(env, enable_keylog_callback));
+#endif
     return exports;
 }
 
