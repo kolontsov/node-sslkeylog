@@ -1,6 +1,8 @@
 const fs = require('fs');
 const E = exports;
 
+require('./lib/polyfill');
+
 try { var sslkeylog = require('./build/Release/sslkeylog.node'); }
 catch(e){
     if (e.code!=='MODULE_NOT_FOUND') throw e;
