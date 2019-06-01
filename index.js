@@ -3,41 +3,29 @@ const E = exports;
 
 require('./lib/polyfill');
 
-try { var sslkeylog = require('./build/Release/sslkeylog.node'); }
-catch(e){
-    if (e.code!=='MODULE_NOT_FOUND') throw e;
-    var sslkeylog = require('./build/Debug/sslkeylog.node');
-}
-
 E.filename = process.env.SSLKEYLOGFILE;
-
-E.get_session_key = tls_socket=>
-    sslkeylog.get_session_key(tls_socket._handle);
 
 E.set_log = filename=>{
     E.filename = filename;
     return E;
 };
 
-E.update_log = tls_socket=>{
-    if (!E.filename)
-        return;
-    const {client_random, master_key} = E.get_session_key(tls_socket);
-    const hex1 = client_random.toString('hex');
-    const hex2 = master_key.toString('hex');
-    fs.appendFileSync(E.filename, `CLIENT_RANDOM ${hex1} ${hex2}\n`);
+E.log_line = line => fs.appendFile(E.filename, line, err => {
+    if (err) console.error('Warning: Failed to log to SSLKEYLOGFILE:', err);
+});
+
+const uniqueOn = (obj, event, listener) => {
+    if (obj.rawListeners(event).indexOf(listener) === -1)
+        obj.on(event, listener);
+    return obj;
 };
 
-// convenience functions
-
-E.hook_server = server=>{
-    server.on('secureConnection', E.update_log);
-};
+E.hook_server = server => uniqueOn(server, 'keylog', E.log_line);
+E.hook_socket = socket => uniqueOn(socket, 'keylog', E.log_line);
 
 E.hook_agent = agent=>{
-    const patchSocket = socket => socket.on("secureConnect", () => E.update_log(socket));
-    const patchIfSocket = socket => socket ? patchSocket(socket) : socket;
+    const hook = socket => socket ? E.hook_socket(socket) : socket;
     const original = agent.createConnection.bind(agent);
     agent.createConnection = (options, callback) =>
-        patchIfSocket(original(options, (err, socket) => callback(err, patchIfSocket(socket))));
+        hook(original(options, (err, socket) => callback(err, hook(socket))));
 };
