@@ -1,6 +1,8 @@
 const fs = require('fs');
 const E = exports;
 
+require('./lib/polyfill');
+
 try { var sslkeylog = require('./build/Release/sslkeylog.node'); }
 catch(e){
     if (e.code!=='MODULE_NOT_FOUND') throw e;
@@ -9,7 +11,8 @@ catch(e){
 
 E.filename = process.env.SSLKEYLOGFILE;
 
-E.get_session_key = sslkeylog.get_session_key;
+E.get_session_key = tls_socket=>
+    sslkeylog.get_session_key(tls_socket._handle);
 
 E.set_log = filename=>{
     E.filename = filename;
@@ -19,7 +22,7 @@ E.set_log = filename=>{
 E.update_log = tls_socket=>{
     if (!E.filename)
         return;
-    const {client_random, master_key} = sslkeylog.get_session_key(tls_socket);
+    const {client_random, master_key} = E.get_session_key(tls_socket);
     const hex1 = client_random.toString('hex');
     const hex2 = master_key.toString('hex');
     fs.appendFileSync(E.filename, `CLIENT_RANDOM ${hex1} ${hex2}\n`);
