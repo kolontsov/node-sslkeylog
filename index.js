@@ -6,12 +6,12 @@ require('./lib/polyfill');
 
 E.filename = process.env.SSLKEYLOGFILE;
 
-E.set_log = filename=>{
+E.setLog = filename => {
     E.filename = filename;
     return E;
 };
 
-E.log_line = line => fs.appendFile(E.filename, line, err => {
+E.logLine = line => fs.appendFile(E.filename, line, err => {
     if (err) console.error('Warning: Failed to log to SSLKEYLOGFILE,', err.message);
 });
 
@@ -21,19 +21,19 @@ const uniqueOn = (obj, event, listener) => {
     return obj;
 };
 
-E.hook_server = server => uniqueOn(server, 'keylog', E.log_line);
-E.hook_socket = socket => uniqueOn(socket, 'keylog', E.log_line);
+E.hookServer = server => uniqueOn(server, 'keylog', E.logLine);
+E.hookSocket = socket => uniqueOn(socket, 'keylog', E.logLine);
 
-E.hook_agent = agent=>{
+E.hookAgent = agent => {
     if (!agent)
         agent = require('https').globalAgent;
-    const hook = socket => socket ? E.hook_socket(socket) : socket;
+    const hook = socket => socket ? E.hookSocket(socket) : socket;
     const original = agent.createConnection.bind(agent);
     agent.createConnection = (options, callback) =>
         hook(original(options, (err, socket) => callback(err, hook(socket))));
     return agent;
 };
 
-E.hook_all = () => common.patchSocket(function () {
-    E.hook_socket(this);
+E.hookAll = () => common.patchSocket(function () {
+    E.hookSocket(this);
 });
