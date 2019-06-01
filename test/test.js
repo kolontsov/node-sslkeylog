@@ -68,6 +68,12 @@ describe('keylog API polyfill', function() {
         }
     ));
     
+    const ver = process.version;
+    const major_ver = parseInt(/^v(\d+)/.exec(ver)[1]);
+    // XXX rm when TLS 1.3 will be available in Node 10
+    if (major_ver < 11)
+        return;
+    // TLS 1.3 tests below
     it('works for TLSv1.3', withPair(
         { minVersion: 'TLSv1.3', maxVersion: 'TLSv1.3' },
         async function (server, client, lines) {
