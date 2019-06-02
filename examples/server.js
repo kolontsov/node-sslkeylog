@@ -1,6 +1,6 @@
 const https = require('https');
 const fs = require('fs');
-const sslkeylog = require('../index.js');
+const sslkeylog = require('..');
 const port = 8000;
 const test_dir = `${__dirname}/../test`;
 const ssl_opt = {
@@ -14,8 +14,8 @@ const req_handler = (req, res)=>{
     res.end('Hello from SSL server\n');
 };
 
-sslkeylog.set_log('sslkeylog.txt');
+sslkeylog.setLog('sslkeylog.txt');
 
-https.createServer(ssl_opt, req_handler)
-    .on('secureConnection', sock=>sslkeylog.update_log(sock))
-    .listen(port, ()=>console.log(`Started on port ${port}`));
+const server = https.createServer(ssl_opt, req_handler);
+sslkeylog.hookServer(server);
+server.listen(port, ()=>console.log(`Started on port ${port}`));
