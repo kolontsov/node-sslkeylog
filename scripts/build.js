@@ -1,20 +1,13 @@
 'use strict';
+const common = require('../lib/common');
 const https = require('https');
 const path = require('path');
 const fs = require('fs');
+const { spawnSync } = require('child_process');
 const pipeline = require('util').promisify(require('stream').pipeline);
 const TMPDIR = process.env.npm_config_tmp||process.env.TMPDIR||'/tmp';
 
-const mkdirp = dir=>{
-    let prefix = path.dirname(dir);
-    if (prefix && !fs.existsSync(prefix))
-        mkdirp(prefix);
-    if (!fs.existsSync(dir))
-        fs.mkdirSync(dir);
-};
-
 const download = async (src_url, dest)=>{
-    mkdirp(path.dirname(dest));
     const resp = await new Promise((resolve, reject)=>
         https.get(src_url, resolve).on('error', reject));
     const fsize = parseInt(resp.headers['content-length']);
@@ -30,7 +23,10 @@ const download = async (src_url, dest)=>{
     });
 };
 
-const download_node = async ()=>{
+const build_module = async ()=>{
+    if (common.nativeApiPresent)
+        return console.log('No keylog polyfill necessary, skipping compilation');
+
     const ver = process.version;
     const major_ver = parseInt(/^v(\d+)/.exec(ver)[1]);
 
@@ -42,11 +38,19 @@ const download_node = async ()=>{
 
     console.log(`Downloading Node.JS source into ${tarball}`);
     await download(node_url, tarball);
-    console.log('Download finished');
+
+    console.log('Building native module');
+    const result = spawnSync('node-gyp', [`--tarbal=${tarball}`, 'rebuild'],
+            { stdio: 'inherit' });
+
+    if (result.error || result.signal)
+        throw new Error('Native build failed unexpectedly');
+    if (result.status)
+        process.exit(result.status);
 };
 
 const main = async ()=>{
-    try { await download_node(); }
+    try { await build_module(); }
     catch(e) {
         console.log('FATAL ERROR:', e);
         process.exit(1);

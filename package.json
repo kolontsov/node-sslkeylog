@@ -5,8 +5,7 @@
   "main": "index.js",
   "gypfile": true,
   "scripts": {
-    "preinstall": "node scripts/get-dist.js",
-    "install": "node-gyp --tarball=${npm_config_tmp}/sslkeylog-node-v${npm_config_node_version}.tar.gz rebuild",
+    "install": "node scripts/build.js",
     "test": "node node_modules/mocha/bin/mocha",
     "clean": "node-gyp clean && (cd examples; make clean)"
   },
