@@ -109,6 +109,7 @@ describe('sslkeylog API', function(){
         sslkeylog.hookAgent();
         let req = makeClient(server, https.get, {});
         let [res] = await once(req, 'response');
+        await delay(50); // FIXME: we need to wait or use appendFileSync
         assert(client_random_line_ws.test(fs.readFileSync(logFile, 'utf8')));
         res.resume();
         await once(res, 'end');
@@ -119,6 +120,7 @@ describe('sslkeylog API', function(){
 
         let req = makeClient(server, https.get, { agent: false });
         let [res] = await once(req, 'response');
+        await delay(50); // FIXME: we need to wait or use appendFileSync
         assert(!fs.existsSync(logFile));
         res.resume();
         await once(res, 'end');
@@ -144,6 +146,7 @@ describe('sslkeylog API', function(){
         sslkeylog.hookServer(server);
         let req = makeClient(server, https.get, {});
         let [res] = await once(req, 'response');
+        await delay(50); // FIXME: we need to wait or use appendFileSync
         const [line1, line2] = fs.readFileSync(logFile, 'utf8').trimRight().split('\n');
         assert.equal(line1, line2);
         assert(client_random_line.test(line1));
@@ -161,6 +164,7 @@ describe('sslkeylog API', function(){
         sslkeylog.hookSocket(socket); // shouldn't do anything, agent was hooked
 
         let [res] = await once(req, 'response');
+        await delay(50); // FIXME: we need to wait or use appendFileSync
         const [line1, line2] = fs.readFileSync(logFile, 'utf8').trimRight().split('\n');
         assert.equal(line1, line2);
         assert(client_random_line.test(line1));
