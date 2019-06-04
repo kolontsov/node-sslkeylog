@@ -43,9 +43,9 @@ function emitNologWarning() {
 
 E.hookAll = () => common.patchSocket(function () {
     if (this._tlsOptions.isServer) {
-        if (!this.server)
+        if (!this._tlsOptions.server)
             return emitNologWarning();
-        E.hookServer(this.server);
+        E.hookServer(this._tlsOptions.server);
     }
 }, function () {
     if (!this._tlsOptions.isServer)
