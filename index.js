@@ -45,9 +45,9 @@ E.hookAll = () => common.patchSocket(function () {
     if (this._tlsOptions.isServer) {
         if (!this.server)
             return emitNologWarning();
-        this._handle.enableKeylogCallback();
         E.hookServer(this.server);
-    } else {
-        E.hookSocket(this);
     }
+}, function () {
+    if (!this._tlsOptions.isServer)
+        E.hookSocket(this);
 });
