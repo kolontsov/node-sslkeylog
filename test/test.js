@@ -172,7 +172,7 @@ describe('sslkeylog API', function(){
         await once(res, 'end');
     });
 
-    it('should intercept all connections', async ()=>{
+    it('should intercept all client connections', async ()=>{
         await unlink(logFile).catch(() => {});
 
         sslkeylog.hookAll();
@@ -185,7 +185,7 @@ describe('sslkeylog API', function(){
         socket.destroy();
     });
 
-    it("shouldn't intercept all connections twice", async ()=>{
+    it("shouldn't intercept all client connections twice", async ()=>{
         await unlink(logFile).catch(() => {});
 
         sslkeylog.hookAll(); // shouldn't do anything this time
@@ -196,6 +196,20 @@ describe('sslkeylog API', function(){
         assert.equal(line1, line2);
         assert(client_random_line.test(line1));
         socket.destroy();
+    });
+
+    it('should intercept all server connections', async ()=>{
+        await unlink(logFile).catch(() => {});
+
+        const tmpServer = await boundServer(tls, { maxVersion: 'TLSv1.2' });
+        const socket = makeClient(tmpServer, tls.connect);
+        await once(socket, 'secureConnect');
+        await delay(50); // FIXME: we need to wait or use appendFileSync
+        const [line1, line2] = fs.readFileSync(logFile, 'utf8').trimRight().split('\n');
+        assert.equal(line1, line2);
+        assert(client_random_line.test(line1));
+        socket.destroy();
+        tmpServer.close();
     });
 
 });
