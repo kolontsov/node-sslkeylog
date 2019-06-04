@@ -35,5 +35,10 @@ E.hookAgent = agent => {
 };
 
 E.hookAll = () => common.patchSocket(function () {
-    E.hookSocket(this);
+    if (this._tlsOptions.isServer && this.server) {
+        this._handle.enableKeylogCallback();
+        E.hookServer(this.server);
+    } else {
+        E.hookSocket(this);
+    }
 });
