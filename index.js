@@ -34,6 +34,20 @@ E.hookAgent = agent => {
     return agent;
 };
 
+let nologWarningEmitted = false;
+function emitNologWarning() {
+    if (nologWarningEmitted) return;
+    console.error('Warning: TLS secrets will NOT be logged for server sockets without an associated tls.Server');
+    nologWarningEmitted = true;
+}
+
 E.hookAll = () => common.patchSocket(function () {
-    E.hookSocket(this);
+    if (this._tlsOptions.isServer) {
+        if (!this._tlsOptions.server)
+            return emitNologWarning();
+        E.hookServer(this._tlsOptions.server);
+    }
+}, function () {
+    if (!this._tlsOptions.isServer)
+        E.hookSocket(this);
 });

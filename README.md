@@ -172,7 +172,7 @@ Returns the module object.
 
  - `socket` (`tls.TLSSocket`): Socket to log decryption keys for.
 
-Log keys for a particular socket. This method must be called after creating
+Log keys for a particular client socket. This method must be called after creating
 the socket (i.e. at the same event loop tick) to guarantee that all keys are
 logged. Logging the same socket multiple times has no effect.
 
@@ -183,6 +183,8 @@ Returns the passed socket.
  - `server` (`tls.Server`): Server to log decryption keys for.
 
 Log keys for all (future) incoming connections to the passed server.
+Logging the same server multiple times has no effect.
+
 Returns the passed server.
 
 ### hookAgent(agent)
