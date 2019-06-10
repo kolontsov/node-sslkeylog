@@ -4,6 +4,8 @@
 
 [![NPM](https://nodei.co/npm/sslkeylog.png)](https://nodei.co/npm/sslkeylog/)
 
+> **WARNING:** since 0.2.0, completely new API is implemented (described below). 0.1.x API is not supported anymore.
+
 **sslkeylog** is a module for easy generation of SSLKEYLOG files, which can be used later by Wireshark to decrypt SSL connections. This method works with any TLS cipher suite including elliptic curves crypto, and works regardless of the TLS version.
 
 **sslkeylog** also allows one to use the [keylog API](https://nodejs.org/docs/latest/api/tls.html#tls_event_keylog_1) introduced in Node.JS 12.3.0, in earlier versions of Node (up to v10). See [use as a polyfill](#use-as-a-polyfill).
