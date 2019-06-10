@@ -1,9 +1,10 @@
 # Changelog
 All notable changes will be documented in this file.
 
-## [0.2.1] - 2019-06-10
+## [0.2.2] - 2019-06-11
 
 - fix missing lib/ in npm package
+- 0.2.1 wasn't published because of travis bug
 
 ## [0.2.0] - 2019-06-10
 
