@@ -1,10 +1,10 @@
 # Changelog
 All notable changes will be documented in this file.
 
-## next
+## [0.2.0] - 2019-06-10
 
-- use SSLKEYLOGFILE env var as default
 - replace `update_log`/`get_session_key` with new `hook*` API
+- use SSLKEYLOGFILE env var as default
 - TLSv1.3 support + implement polyfill for keylog API introduced in Node 12.3
 - add compatibility with Node 10.0-10.7 and 12+
 - native module no longer built for Node 12.3+
