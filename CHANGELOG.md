@@ -1,6 +1,10 @@
 # Changelog
 All notable changes will be documented in this file.
 
+## [0.2.1] - 2019-06-10
+
+- fix missing lib/ in npm package
+
 ## [0.2.0] - 2019-06-10
 
 - replace `update_log`/`get_session_key` with new `hook*` API
