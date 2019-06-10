@@ -117,7 +117,7 @@ the same loop tick), otherwise keys may not be logged properly.
 
 For more advanced use cases, you can use the [keylog API](https://nodejs.org/docs/latest/api/tls.html#tls_event_keylog_1) directly:
 
- - If you are using Node.JS 12.3.0 or earlier, you don't need this module at all.
+ - If you are using Node.JS 12.3.0 or later, you don't need this module at all.
  - If you are using an earlier version of Node.JS, just doing `require('sslkeylog')` will activate the polyfill. Then you can use the API as usual.
 
 
