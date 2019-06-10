@@ -15,7 +15,7 @@ Further reading about SSLKEYLOG:
 * [SSL/TLS Decryption: uncovering secrets](https://sharkfesteurope.wireshark.org/assets/presentations17eu/15.pdf) (PDF, SharkFest'17)
 * [Decrypting TLS browser traffic with Wireshark: the easy way](https://jimshaver.net/2015/02/11/decrypting-tls-browser-traffic-with-wireshark-the-easy-way/)
 
-[Node.js](https://nodejs.org/) v10+ is **required**. Tested on v10 (LTS) and v11 (CURRENT), OS X and Linux.
+[Node.js](https://nodejs.org/) v10+ is **required**. Tested on v10 (LTS), v11, v12; OS X and Linux.
 
 
 ## Usage
