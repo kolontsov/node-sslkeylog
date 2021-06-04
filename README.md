@@ -1,3 +1,9 @@
+**DEPRECATION WARNING**
+
+This code is no longer supported, please consider using Node.js' [```--tls-keylog=file```](https://nodejs.org/api/cli.html#cli_tls_keylog_file) command-line option and ['keylog' event](https://nodejs.org/api/tls.html#tls_event_keylog).
+
+---
+
 # node-sslkeylog
 
 [![Build Status](https://travis-ci.org/kolontsov/node-sslkeylog.svg?branch=master)](https://travis-ci.org/kolontsov/node-sslkeylog)
